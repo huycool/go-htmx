@@ -1,12 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    <h2>Hello world</h2>
-</body>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic" />
+    <script
+      src="https://unpkg.com/htmx.org@1.9.6"
+      integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <h2>Hello world!!</h2>
+
+    <div class="flex two">
+      <div>
+        <table class="primary">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>City</th>
+            </tr>
+          </thead>
+          <tbody id="film-list">
+            {{ range .Films }}
+            <tr>
+              <td>{{ .Title }}</td>
+              <td>{{ .Director }}</td>
+            </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <form hx-post="/add-film/" hx-target="#film-list" hx-swap="beforebegin">
+          <fieldset class="flex two">
+            <label
+              ><input type="text" name="title" placeholder="Title"
+            /></label>
+            <label
+              ><input type="text" name="director" placeholder="Director"
+            /></label>
+          </fieldset>
+          <button type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+  </body>
 </html>

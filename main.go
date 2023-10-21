@@ -18,8 +18,8 @@ func main() {
 	films := map[string][]Film{
 		"Films": {
 			{Title: "The Godfather", Director: "Francis Ford Coppola"},
-			{Title: "The Godfather", Director: "Francis Ford Coppola"},
-			{Title: "The Godfather", Director: "Francis Ford Coppola"},
+			{Title: "Aliens", Director: "Ridley Scott"},
+			{Title: "Star Wars: New Hope", Director: "George Lucas"},
 		},
 	}
 
@@ -29,7 +29,22 @@ func main() {
 		tmpl := template.Must(template.ParseFiles("index.html"))
 		tmpl.Execute(w, films)
 	}
+	h2 := func(w http.ResponseWriter, r *http.Request) {
+		log.Print(r.Header.Get("HX-Request"))
+		title := r.PostFormValue("title")
+		director := r.PostFormValue("director")
+		fmt.Println(title + ":" + director)
+		htmlStr := fmt.Sprintf(
+			`<tr>
+		<td>%s</td>
+		<td>%s</td>
+	  	</tr>`, title, director)
+		tmpl, _ := template.New("t").Parse(htmlStr)
+		tmpl.Execute(w, nil)
+	}
+
 	http.HandleFunc("/", h1)
+	http.HandleFunc("/add-film/", h2)
 
 	log.Fatal(http.ListenAndServe(":8000", nil))
 }
